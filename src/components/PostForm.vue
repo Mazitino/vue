@@ -14,19 +14,19 @@
             placeholder="Описание"
         >
 
-        <button 
-            class="btn" 
+        <my-button
+            style="align-self: flex-end; margin-top: 15px"
             @click="createPost"
             >
                 Создать
-        </button>
+        </my-button>
 
-        <button 
-            class="btn"
+        <my-button
+            style="align-self: flex-end; margin-top: 15px"
             @click="deletePost"
             >
             Удалить
-        </button>
+        </my-button>
 
     </form>
 </template>
@@ -68,12 +68,5 @@ form{
     padding: 18px 15px;
     margin-top: 15px;
     }
-.btn {
-    margin-top: 15px;
-    align-self: flex-end;
-    padding: 18px 30px;
-    background: none;
-    color: teal;
-    border: 1px solid teal;
-}
+
 </style>
