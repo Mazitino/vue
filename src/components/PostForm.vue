@@ -13,12 +13,21 @@
             type="text" 
             placeholder="Описание"
         >
+
         <button 
             class="btn" 
             @click="createPost"
             >
                 Создать
         </button>
+
+        <button 
+            class="btn"
+            @click="deletePost"
+            >
+            Удалить
+        </button>
+
     </form>
 </template>
 
@@ -40,8 +49,9 @@ export default {
                 title: '',
                 body: ''
             }
-        
-
+        },
+        deletePost(){
+            this.$emit('delete', this.post)
         }
     }
 }

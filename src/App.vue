@@ -2,6 +2,7 @@
     <div class="app">
         <post-form
              @create="createPost"
+             @delete="deletePost"
         />
         <post-list 
             :posts="posts"
@@ -32,6 +33,9 @@ export default {
     methods: {
         createPost(post){
             this.posts.push(post);
+        },
+        deletePost(post){
+            this.posts.pop();
         }
     }
 
