@@ -19,13 +19,6 @@
                 Создать
         </my-button>
 
-        <my-button
-            style="align-self: flex-end; margin-top: 15px"
-            @click="deletePost"
-            >
-            Удалить
-        </my-button>
-
     </form>
 </template>
 
@@ -48,9 +41,6 @@ export default {
                 body: ''
             }
         },
-        deletePost(){
-            this.$emit('delete', this.post)
-        }
     }
 }
 </script>
