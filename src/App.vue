@@ -31,6 +31,21 @@
             v-if="!isPostLoading"
         />
         <div v-else>Идет загрузка...</div>
+        <div class="page_wrapper">
+            <div 
+                v-for="pageNumber in totalPages" 
+                :key="pageNumber"
+                class="page"
+                :class="{
+                    'current-page': page === pageNumber
+                }"
+                @click="changePage(pageNumber)"
+                >
+                    {{ pageNumber }}
+
+            </div>
+
+        </div>
     </div>
 </template>
 
@@ -54,6 +69,9 @@ export default {
             isPostLoading: false,
             selectedSort: '',
             searchQuery: '',
+            page: 1,
+            limit: 10,
+            totalPages: 0,
             sortOptions: [
                 {value: 'title', name: 'По названию'},
                 {value: 'body', name: 'По описанию'},
@@ -72,10 +90,20 @@ export default {
         showDialog(){
             this.dialogVisible = true;
         },
+        changePage(pageNumber){
+            this.page = pageNumber
+            //this.fetchPosts()
+        },
         async fetchPosts(){
             try {
                 this.isPostLoading = true;
-                const responce = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+                const responce = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+                    params: {
+                        _page: this.page,
+                        _limit: this.limit
+                    }
+                });
+                this.totalPages = Math.ceil(responce.headers['x-total-count'] / this.limit)
                 this.posts = responce.data;  
             }catch (e){
                 alert('Ошибка')
@@ -96,7 +124,9 @@ export default {
         }
     },
     watch: {
-        
+        page(){
+            this.fetchPosts()
+        }
     }
 
 }
@@ -117,5 +147,16 @@ export default {
     margin: 15px 0;
     display: flex;
     justify-content: space-between;
+}
+.page_wrapper {
+    display: flex;
+    margin-top: 15px;
+}
+.page {
+    border: 1px solid black;
+    padding: 10px;
+}
+.current-page{
+    border: 2px solid teal;
 }
 </style>
