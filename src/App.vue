@@ -8,16 +8,12 @@
         <div class="app_btns">
             <my-button
                 @click="showDialog"
-                
             >
                 Создать новый пост
-
             </my-button>
             <my-select
                 v-model="selectedSort"
                 :options="sortOptions"
-            
-            
             />
         </div>
         <my-dialog v-model:show="dialogVisible" >
@@ -31,7 +27,8 @@
             v-if="!isPostLoading"
         />
         <div v-else>Идет загрузка...</div>
-        <div class="page_wrapper">
+        <div ref="observer" class="observer"></div>
+        <!-- <div class="page_wrapper">
             <div 
                 v-for="pageNumber in totalPages" 
                 :key="pageNumber"
@@ -44,10 +41,16 @@
                     {{ pageNumber }}
 
             </div>
-
-        </div>
+        </div> -->
     </div>
 </template>
+
+
+
+
+
+
+
 
 
 <script>
@@ -90,10 +93,10 @@ export default {
         showDialog(){
             this.dialogVisible = true;
         },
-        changePage(pageNumber){
-            this.page = pageNumber
-            //this.fetchPosts()
-        },
+        // changePage(pageNumber){
+        //    this.page = pageNumber
+        //    //this.fetchPosts()
+        // },
         async fetchPosts(){
             try {
                 this.isPostLoading = true;
@@ -110,10 +113,40 @@ export default {
             }finally {
                 this.isPostLoading = false;
             }
+        },
+        async loadMorePosts(){
+            try {
+                this.page +=1;
+                //this.isPostLoading = true;
+                const responce = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+                    params: {
+                        _page: this.page,
+                        _limit: this.limit
+                    }
+                });
+                this.totalPages = Math.ceil(responce.headers['x-total-count'] / this.limit)
+                this.posts = [...this.posts, ...responce.data];  
+            }catch (e){
+                alert('Ошибка')
+            }finally {
+                //this.isPostLoading = false;
+            }
         }
     },
     mounted(){
         this.fetchPosts();
+       console.log( this.$refs.observer);
+        const options = {
+            rootMargin: '0px',
+            threshold: 1.0
+        }
+        const callback = (entries, observer) => {
+            if (entries[0].isIntersecting && this.page < this.totalPages) {
+                this.loadMorePosts()
+            }
+        };
+        const observer = new IntersectionObserver(callback, options);
+        observer.observe(this.$refs.observer);
     },
     computed: {
         sortedPosts() {
@@ -124,13 +157,18 @@ export default {
         }
     },
     watch: {
-        page(){
-            this.fetchPosts()
-        }
+        // page(){
+        //     this.fetchPosts()
+        // }
     }
-
 }
 </script>
+
+
+
+
+
+
 
 
 
@@ -158,5 +196,9 @@ export default {
 }
 .current-page{
     border: 2px solid teal;
+}
+.observer {
+    height: 30px;
+    background: teal;
 }
 </style>
