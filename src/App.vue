@@ -24,5 +24,6 @@ export default {
 }
 .app{
     padding: 20px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 </style>

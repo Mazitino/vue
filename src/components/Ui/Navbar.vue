@@ -18,8 +18,8 @@ export default {
 <style scoped>
 .navbar{
     height: 60px;
-    background-color: rgb(224, 224, 224);
-    box-shadow: 2px 2px 4px gray;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 10px rgba(212, 212, 212, 0.616);
     display: flex;
     align-items: center;
     padding: 0x 15px;

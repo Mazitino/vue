@@ -13,7 +13,8 @@ export default {
 
 <style>
 .btn {
-    padding: 18px 30px;
+    margin: 5px;
+    padding: 15px 30px;
     background: none;
     color: teal;
     border: 1px solid teal;
